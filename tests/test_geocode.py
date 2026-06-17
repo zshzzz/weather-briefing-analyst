@@ -56,6 +56,12 @@ class GeocodeTests(unittest.TestCase):
         self.assertTrue(result["requires_disambiguation"])
         self.assertIn("origin and destination", result["source_status"][0]["reason"])
 
+    def test_arriving_at_beijing_is_not_a_route(self) -> None:
+        self.assertFalse(geocode.looks_like_route("我明天到北京，天气怎么样？"))
+
+    def test_explicit_origin_destination_is_a_route(self) -> None:
+        self.assertTrue(geocode.looks_like_route("从北京到天津自驾天气如何？"))
+
     def test_invalid_count_is_rejected(self) -> None:
         with self.assertRaises(ValueError):
             geocode.geocode("北京", count=0)

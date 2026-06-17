@@ -36,6 +36,8 @@ def build_snapshot(
 
     snapshot: dict[str, Any] = {
         "location": location,
+        "requires_disambiguation": geocode_result.get("requires_disambiguation", False),
+        "candidates": geocode_result.get("candidates", []),
         "generated_at": generated_at,
         "daily": [],
         "hourly": [],

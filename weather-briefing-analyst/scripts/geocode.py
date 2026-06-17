@@ -17,7 +17,11 @@ from urllib.request import urlopen
 GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search"
 MAX_RESPONSE_BYTES = 2_000_000
 COORD_RE = re.compile(r"^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$")
-ROUTE_RE = re.compile(r"(?:从.+到|.+到.+|.+\bto\b.+|.+->.+|.+→.+)", re.IGNORECASE)
+ROUTE_PATTERNS = [
+    re.compile(r"从\s*(.+?)\s*(?:到|至)\s*(.+)"),
+    re.compile(r"(.+?)\s*(?:->|→)\s*(.+)"),
+    re.compile(r"\bfrom\s+(.+?)\s+to\s+(.+)", re.IGNORECASE),
+]
 POI_OR_ADDRESS_HINTS = (
     "路",
     "街",
@@ -90,7 +94,8 @@ def confidence_for(result: dict[str, Any], query: str) -> str:
 
 
 def looks_like_route(query: str) -> bool:
-    return bool(ROUTE_RE.search(query.strip()))
+    normalized = query.strip()
+    return any(pattern.search(normalized) for pattern in ROUTE_PATTERNS)
 
 
 def looks_like_poi_or_address(query: str) -> bool:

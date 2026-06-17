@@ -4,6 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+from urllib.parse import parse_qs, urlparse
 
 
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "weather-briefing-analyst" / "scripts"
@@ -48,6 +49,22 @@ class FetchOpenMeteoTests(unittest.TestCase):
         self.assertEqual(status["forecast_valid_from"], "2026-06-17T00:00")
         self.assertIsNone(status["provider_generated_at"])
         self.assertNotIn("source_time", status)
+
+    def test_request_forces_metric_units(self) -> None:
+        captured_urls = []
+
+        def fake_fetch_json(url: str, *_args: object, **_kwargs: object) -> dict:
+            captured_urls.append(url)
+            return valid_payload()
+
+        with patch.object(fetch_open_meteo, "fetch_json", side_effect=fake_fetch_json):
+            result = fetch_open_meteo.fetch_forecast(39.9, 116.4, days=1)
+
+        self.assertIsNotNone(result["forecast"])
+        params = parse_qs(urlparse(captured_urls[0]).query)
+        self.assertEqual(params["temperature_unit"], ["celsius"])
+        self.assertEqual(params["wind_speed_unit"], ["kmh"])
+        self.assertEqual(params["precipitation_unit"], ["mm"])
 
     def test_api_error_is_reported_as_failed_source(self) -> None:
         with patch.object(

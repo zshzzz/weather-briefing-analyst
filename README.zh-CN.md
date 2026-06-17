@@ -62,6 +62,7 @@ weather-briefing-analyst/
 │   ├── test_fetch_open_meteo.py
 │   ├── test_geocode.py
 │   ├── test_normalize_weather.py
+│   ├── test_weather_snapshot.py
 │   └── trigger_cases.jsonl
 └── weather-briefing-analyst/
     ├── SKILL.md

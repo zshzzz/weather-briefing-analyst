@@ -126,6 +126,9 @@ def fetch_forecast(
             "daily": ",".join(DAILY_FIELDS),
             "timezone": timezone_name or "auto",
             "forecast_days": days,
+            "temperature_unit": "celsius",
+            "wind_speed_unit": "kmh",
+            "precipitation_unit": "mm",
         }
     )
     url = f"{FORECAST_URL}?{params}"
