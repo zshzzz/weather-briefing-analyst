@@ -59,6 +59,15 @@ class GeocodeTests(unittest.TestCase):
     def test_arriving_at_beijing_is_not_a_route(self) -> None:
         self.assertFalse(geocode.looks_like_route("我明天到北京，天气怎么样？"))
 
+    def test_today_to_tomorrow_is_not_a_route(self) -> None:
+        self.assertFalse(geocode.looks_like_route("从今天到明天北京天气如何？"))
+
+    def test_morning_to_evening_is_not_a_route(self) -> None:
+        self.assertFalse(geocode.looks_like_route("从早到晚会下雨吗？"))
+
+    def test_weekday_range_is_not_a_route(self) -> None:
+        self.assertFalse(geocode.looks_like_route("从周一至周三上海温度多少？"))
+
     def test_explicit_origin_destination_is_a_route(self) -> None:
         self.assertTrue(geocode.looks_like_route("从北京到天津自驾天气如何？"))
 

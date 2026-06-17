@@ -22,6 +22,25 @@ ROUTE_PATTERNS = [
     re.compile(r"(.+?)\s*(?:->|→)\s*(.+)"),
     re.compile(r"\bfrom\s+(.+?)\s+to\s+(.+)", re.IGNORECASE),
 ]
+TIME_RANGE_HINTS = (
+    "今天",
+    "明天",
+    "后天",
+    "昨天",
+    "早",
+    "早上",
+    "上午",
+    "下午",
+    "晚",
+    "晚上",
+    "周一",
+    "周二",
+    "周三",
+    "周四",
+    "周五",
+    "周六",
+    "周日",
+)
 POI_OR_ADDRESS_HINTS = (
     "路",
     "街",
@@ -95,6 +114,8 @@ def confidence_for(result: dict[str, Any], query: str) -> str:
 
 def looks_like_route(query: str) -> bool:
     normalized = query.strip()
+    if any(normalized.startswith(f"从{start}") for start in TIME_RANGE_HINTS):
+        return False
     return any(pattern.search(normalized) for pattern in ROUTE_PATTERNS)
 
 
