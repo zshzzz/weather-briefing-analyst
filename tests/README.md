@@ -14,6 +14,16 @@ These JSONL files are lightweight eval seeds for skill behavior. Each line conta
 - `source_failure_cases.jsonl`: unavailable radar, satellite, AQI, official warning, and empty API behavior.
 - `hallucination_cases.jsonl`: safeguards against invented radar/cloud imagery, stale data, relative dates, and overconfident timing.
 
+## Automated checks
+
+Run the local static checks from the repository root:
+
+```bash
+python3 tests/run_static_checks.py
+```
+
+The runner compiles bundled scripts, validates all JSONL eval seeds, runs unit tests, and runs `shellcheck` when available. The GitHub Actions workflow in `.github/workflows/test.yml` runs these core checks in CI.
+
 ## Initial grading checklist
 
 - The answer uses absolute dates and the user's timezone.

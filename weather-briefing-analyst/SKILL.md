@@ -51,16 +51,18 @@ If the user explicitly chooses a level, honor it unless the request cannot be an
    - Convert the address/place into coordinates and an administrative location.
    - Record the geocoding confidence and matched administrative hierarchy when available.
    - For POIs such as scenic spots, airports, stations, resorts, campuses, or theme parks, prefer the POI coordinate over an administrative center.
+   - If bundled scripts are available, inspect `scripts/` before using ad hoc API calls. Use `scripts/weather_snapshot.py` as the first deterministic data pass for single-point quick, standard, and deep briefings; supplement it with browser/API evidence only for sources the script does not cover.
+   - Use `scripts/geocode.py` directly for coordinate, city, and district queries. If it returns `requires_disambiguation: true`, do not continue with the first candidate as if it were certain; ask a concise follow-up or use a POI/address-capable source.
    - If the place is broad, choose a representative point only when that is reasonable; state the choice and its limits.
    - For large districts/cities, mountainous scenic areas, coastal/island locations, or places with major elevation differences, flag microclimate or terrain sensitivity.
-   - For route requests, sample at least the origin and destination; add a midpoint for longer trips when possible.
+   - For route requests, split the route into origin and destination before geocoding; add a midpoint for longer trips when possible. Do not pass an entire route sentence into `geocode.py` as one place.
    - Preserve the user's local timezone and use absolute dates.
    - Record the selected or inferred analysis level and do not gather sources outside that level unless a warning signal requires escalation.
 
 2. **Collect time-sensitive evidence**
    - Use live sources; do not rely on memory for current weather.
    - Gather at least two independent forecast sources when possible.
-   - Prefer bundled deterministic scripts when available for geocoding and Open-Meteo forecast collection; use browser/API work as supplements when the scripts do not cover a needed source.
+   - Prefer bundled deterministic scripts when available for geocoding and Open-Meteo forecast collection; use browser/API work as supplements when the scripts do not cover a needed source. Do not replace these scripts with raw `curl` unless the script is unavailable or has failed and the failure is disclosed.
    - For China locations, prioritize official sources such as China Meteorological Administration / local meteorological bureau pages, then supplement with global model APIs.
    - Include radar/satellite/cloud imagery only for levels that require it. If imagery cannot be accessed, say so and base the confidence rating on the remaining evidence.
    - Treat official warnings, observations, radar, satellite, and numerical forecasts as separate evidence types. Do not let one evidence type imply certainty for unrelated claims.

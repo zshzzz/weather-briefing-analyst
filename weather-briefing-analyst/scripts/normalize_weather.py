@@ -98,6 +98,8 @@ def normalize_hourly(hourly: dict[str, list[Any]]) -> list[dict[str, Any]]:
 
 
 def normalize_forecast(forecast: dict[str, Any]) -> dict[str, Any]:
+    hourly_units = forecast.get("hourly_units") or {}
+    daily_units = forecast.get("daily_units") or {}
     return {
         "timezone": forecast.get("timezone"),
         "timezone_abbreviation": forecast.get("timezone_abbreviation"),
@@ -106,10 +108,15 @@ def normalize_forecast(forecast: dict[str, Any]) -> dict[str, Any]:
         "longitude": forecast.get("longitude"),
         "elevation_m": forecast.get("elevation"),
         "units": {
-            "temperature": "celsius",
-            "precipitation": "mm",
-            "wind_speed": "km/h",
-            "visibility": "m",
+            "temperature": daily_units.get("temperature_2m_max")
+            or hourly_units.get("temperature_2m"),
+            "precipitation": daily_units.get("precipitation_sum")
+            or hourly_units.get("precipitation"),
+            "wind_speed": daily_units.get("wind_speed_10m_max")
+            or hourly_units.get("wind_speed_10m"),
+            "visibility": hourly_units.get("visibility"),
+            "provider_hourly": hourly_units,
+            "provider_daily": daily_units,
         },
         "daily": normalize_daily(forecast.get("daily") or {}),
         "hourly": normalize_hourly(forecast.get("hourly") or {}),

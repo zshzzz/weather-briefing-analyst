@@ -1,6 +1,6 @@
 interface:
   display_name: "Weather Briefing Analyst"
   short_description: "分级天气研判、雷达云图与出行建议"
-  default_prompt: "Use $weather-briefing-analyst to ask me to choose an analysis level before briefing the next few days of weather for 北京市朝阳区."
+  default_prompt: "使用 $weather-briefing-analyst 自动选择合适的分析等级，分析北京市朝阳区未来几天的天气和出行影响。"
 policy:
   allow_implicit_invocation: true

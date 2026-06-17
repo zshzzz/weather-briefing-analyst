@@ -57,7 +57,11 @@ weather-briefing-analyst/
 │   ├── hallucination_cases.jsonl
 │   ├── location_cases.jsonl
 │   ├── mode_selection_cases.jsonl
+│   ├── run_static_checks.py
 │   ├── source_failure_cases.jsonl
+│   ├── test_fetch_open_meteo.py
+│   ├── test_geocode.py
+│   ├── test_normalize_weather.py
 │   └── trigger_cases.jsonl
 └── weather-briefing-analyst/
     ├── SKILL.md
@@ -85,6 +89,26 @@ weather-briefing-analyst/
 - Produces day-by-day forecast tables, per-element confidence, and travel advice.
 - Clearly labels uncertainty, stale imagery, inaccessible sources, and non-official guidance.
 
+## Analysis Level Triggers
+
+The skill normally infers the analysis level from the user's wording. Users can still explicitly request `quick`, `standard`, or `deep`.
+
+- Quick: simple lookup questions such as `Will it rain in Guangzhou tomorrow?`, `明天成都最高温多少？`, or `快速看一下明后天要不要带伞`.
+- Standard: practical decisions such as commute, clothing, travel, elderly/children planning, outdoor windows, or `北京朝阳区未来几天适合出门吗？`.
+- Deep: meteorological diagnosis or imagery-driven questions such as radar, satellite/cloud imagery, thunderstorm timing, heavy-rain assessment, or `帮我看深圳今天下午云图和雷达，判断暴雨什么时候来`.
+
+Example:
+
+```text
+User: 帮我看北京市朝阳区未来几天天气，适合出门吗？
+Expected: infer standard level; run the bundled snapshot script first, then add official forecast, warnings, radar/AQI context when available.
+```
+
+```text
+User: 明后天去环球影城会不会下雨，云图怎么看？
+Expected: infer deep level; prefer the theme-park POI coordinate, run the bundled script for model data, then inspect valid radar/satellite/cloud imagery before making imagery claims.
+```
+
 ## Data Snapshot Script
 
 The bundled Open-Meteo snapshot script provides a deterministic starting point for agents:
@@ -93,7 +117,19 @@ The bundled Open-Meteo snapshot script provides a deterministic starting point f
 python weather-briefing-analyst/scripts/weather_snapshot.py "39.9,116.4" --days 3
 ```
 
+For normal single-location briefings, agents should use this script before falling back to raw `curl` or browser-only collection. The snapshot intentionally covers only Open-Meteo geocoding plus model forecasts; official warnings, radar, satellite/cloud imagery, AQI, and UV still need supplemental sources.
+
 If the local Python CA store is broken and HTTPS requests fail with `CERTIFICATE_VERIFY_FAILED`, rerun with `--allow-insecure-tls` and treat that output as a lower-trust diagnostic source.
+
+## Tests
+
+Run local checks without live network access:
+
+```bash
+python3 tests/run_static_checks.py
+```
+
+This compiles bundled scripts, validates JSONL eval seeds, runs unit tests, and runs `shellcheck` when it is installed. GitHub Actions runs the same core checks on push and pull request.
 
 ## Discoverability Notes
 
