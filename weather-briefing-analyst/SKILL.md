@@ -1,6 +1,6 @@
 ---
 name: weather-briefing-analyst
-description: Produce configurable weather briefings for a user-provided place or address, from quick forecast checks to multi-source analysis with radar/satellite/cloud imagery, air quality, warnings, and travel advice. Use this whenever the user asks for weather analysis, cloud-map or radar interpretation, near-term forecast confidence, commute/outdoor planning, packing advice, or "最近几天/未来几天" weather guidance for a city, district, address, attraction, route, or coordinate; start by offering analysis depth choices when the user has not already specified the depth.
+description: Produce configurable weather briefings for a user-provided place or address, from quick forecast checks to multi-source analysis with radar/satellite/cloud imagery, air quality, warnings, and travel advice. Use this whenever the user asks for weather analysis, cloud-map or radar interpretation, near-term forecast confidence, commute/outdoor planning, packing advice, or "最近几天/未来几天" weather guidance for a city, district, address, attraction, route, or coordinate; require the user to choose an analysis depth before collecting live data unless they already explicitly chose quick, standard, or deep mode.
 ---
 
 # Weather Briefing Analyst
@@ -11,9 +11,9 @@ Create a forecaster-style briefing for a specific place. Treat the user's locati
 
 This skill is for decision support, not official warnings. Prefer official meteorological agencies for warnings and nowcasting, and clearly label uncertainty.
 
-## Analysis Levels
+## Analysis Level Gate
 
-Before collecting live data, determine the depth. If the user did not specify a depth, ask one short question and offer these choices:
+Before collecting live data or starting the briefing, require an explicit analysis level. If the user did not already choose a level in the request, pause and ask one short question with these choices:
 
 1. **快速版：只查天气预报**
    - Use one official forecast source and one model/API cross-check.
@@ -22,13 +22,13 @@ Before collecting live data, determine the depth. If the user did not specify a 
 
 2. **标准版：天气预报 + 雷达/空气质量（推荐）**
    - Use official forecast, model/API cross-check, current observations, radar imagery when accessible, and AQI/UV if relevant.
-   - This is the default if the user says "帮我分析", "出行建议", "未来几天", or wants a practical answer without requesting deep meteorological detail.
+   - This is recommended for practical travel or commute guidance, but never select it by default without user confirmation.
 
 3. **深度版：天气预报 + 雷达 + 云图/天气形势**
    - Use all standard sources plus satellite/cloud imagery or other synoptic products when valid and accessible.
    - Use this for cloud-map interpretation, thunderstorm timing, outdoor event planning, severe-weather concern, or when the user explicitly asks for "云图", "雷达形势", "天气形势", or "全量分析".
 
-If the user already specified the depth or asks for urgent advice, do not pause for a question; proceed with the closest level and state which level was used.
+Do not infer a level from wording such as "帮我分析", "出行建议", "未来几天", "会不会下雨", or urgent phrasing. If no level is explicitly selected, ask the user to choose one before proceeding. If the user already specified the level, proceed and state which level was used.
 
 ## Core Workflow
 
@@ -36,6 +36,7 @@ If the user already specified the depth or asks for urgent advice, do not pause 
    - Convert the address/place into coordinates and an administrative location.
    - If the place is broad, choose a representative point and state that choice.
    - Preserve the user's local timezone and use absolute dates.
+   - Stop before live-data collection when the user has not explicitly selected 快速版, 标准版, or 深度版.
    - Record the selected analysis level and do not gather sources outside that level unless a warning signal requires escalation.
 
 2. **Collect time-sensitive evidence**
@@ -104,13 +105,13 @@ Never present a deterministic forecast for thunderstorms or short-lived convecti
 
 ## Common User Requests
 
-- "帮我看北京市朝阳区未来几天天气，适合出门吗？" -> ask level choice if not urgent; otherwise use standard level.
+- "帮我看北京市朝阳区未来几天天气，适合出门吗？" -> ask level choice before collecting data.
 - "快速看一下明后天会不会下雨" -> quick level.
 - "明后天去环球影城会不会下雨，云图怎么看？"
 - "给我分析一下杭州西湖附近这几天的天气和穿衣建议"
 - "看一下这个地址未来三天通勤是否会受暴雨影响"
 - "Give me a quick forecast check for Beijing Chaoyang District for the next two days." -> quick level.
-- "Analyze whether I should carry an umbrella for my commute in Shanghai Pudong tomorrow." -> standard level.
+- "Analyze whether I should carry an umbrella for my commute in Shanghai Pudong tomorrow." -> ask level choice before collecting data.
 - "Use radar and satellite/cloud imagery to brief thunderstorm risk near Hangzhou West Lake this weekend." -> deep level.
-- "I am visiting Universal Beijing Resort tomorrow. Check rain timing, wind, heat, and travel advice." -> standard level, escalate to deep if radar/cloud imagery is requested.
-- "Assess the next three days of weather for this address and tell me the best outdoor activity windows." -> ask level choice if not urgent; otherwise use standard level.
+- "I am visiting Universal Beijing Resort tomorrow. Check rain timing, wind, heat, and travel advice." -> ask level choice before collecting data.
+- "Assess the next three days of weather for this address and tell me the best outdoor activity windows." -> ask level choice before collecting data.

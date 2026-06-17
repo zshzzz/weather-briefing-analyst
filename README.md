@@ -63,7 +63,7 @@ weather-briefing-analyst/
 ## Capabilities
 
 - Resolves a city, district, address, landmark, route point, or coordinate into a forecast location.
-- Offers configurable depth before collecting data:
+- Requires the user to choose an analysis depth before collecting live weather data:
   - Quick: weather forecast only.
   - Standard: forecast plus radar and air-quality context.
   - Deep: forecast plus radar, satellite/cloud imagery, and broader weather-pattern analysis.
