@@ -83,14 +83,6 @@ For skills.sh and similar find-skill tools, the most important signals are:
 
 Indexing is not always immediate. After publishing, install the skill once through the CLI and give the crawler or discovery service time to refresh.
 
-## Validation
-
-Validate the skill folder with:
-
-```bash
-python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./weather-briefing-analyst
-```
-
 ## Safety
 
 This skill provides decision support, not official warnings. For severe weather, users should follow local meteorological bureau alerts and official emergency guidance.
@@ -157,12 +149,6 @@ npx skills add zshzzz/weather-briefing-analyst --skill weather-briefing-analyst
 - 使用 skills CLI 安装一次；如果遥测开启，安装数据可能帮助后续发现和排序。
 
 索引通常不是实时的。发布后建议安装一次，并等待发现服务刷新。
-
-### 校验
-
-```bash
-python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./weather-briefing-analyst
-```
 
 ### 安全说明
 
