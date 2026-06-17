@@ -42,6 +42,15 @@ npx skills add zshzzz/weather-briefing-analyst --skill weather-briefing-analyst
 两个脚本都会把 `weather-briefing-analyst` 安装到目标 skills 目录。
 如果目标位置已存在，默认会先创建带时间戳的备份；传入 `--force` 时才会不备份直接覆盖。
 
+## 运行环境要求
+
+- Python 3.10 或更新版本。
+- 不需要任何第三方 Python 包。
+- 需要能够通过 HTTPS 访问：
+  - `geocoding-api.open-meteo.com`
+  - `api.open-meteo.com`
+- `shellcheck` 是可选项，仅用于本地静态检查。
+
 ## 目录结构
 
 ```text

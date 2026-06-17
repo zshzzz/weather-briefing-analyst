@@ -1,6 +1,7 @@
 ---
 name: weather-briefing-analyst
 description: Produce configurable weather briefings for a user-provided place or address, from quick forecast checks to multi-source analysis with radar/satellite/cloud imagery, air quality, warnings, and travel advice. Use this whenever the user asks for weather analysis, cloud-map or radar interpretation, near-term forecast confidence, commute/outdoor planning, packing advice, or "最近几天/未来几天" weather guidance for a city, district, address, attraction, route, or coordinate; infer quick/standard/deep analysis depth from the request when the user did not specify one, and only ask a follow-up when the place, scope, cost, or depth is genuinely ambiguous.
+compatibility: Requires Python 3.10+ and outbound HTTPS access to Open-Meteo APIs. No third-party Python packages required.
 ---
 
 # Weather Briefing Analyst

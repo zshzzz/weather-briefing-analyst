@@ -42,6 +42,15 @@ Install locally for Claude Code:
 Both scripts install `weather-briefing-analyst` to the target skills directory.
 If the target already exists, they create a timestamped backup first. Pass `--force` to replace without a backup.
 
+## Runtime Requirements
+
+- Python 3.10 or newer.
+- No third-party Python packages are required.
+- Outbound HTTPS access to:
+  - `geocoding-api.open-meteo.com`
+  - `api.open-meteo.com`
+- `shellcheck` is optional and is used only by local static checks.
+
 ## Skill Layout
 
 ```text
