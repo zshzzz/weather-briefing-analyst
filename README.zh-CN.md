@@ -13,6 +13,10 @@
 - `用标准版分析北京朝阳区未来几天天气`
 - `用深度版看杭州西湖附近的雷达和云图形势`
 
+## Star 增长
+
+[![Star History Chart](https://api.star-history.com/svg?repos=zshzzz/weather-briefing-analyst&type=Date)](https://www.star-history.com/#zshzzz/weather-briefing-analyst&Date)
+
 ## 安装
 
 通过 skills CLI 从 GitHub 安装：

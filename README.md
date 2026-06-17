@@ -13,6 +13,10 @@ This is designed for questions like:
 - `Use weather-briefing-analyst for a standard briefing on Beijing Chaoyang District`
 - `Give me a deep weather briefing with radar and satellite context for Hangzhou West Lake`
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=zshzzz/weather-briefing-analyst&type=Date)](https://www.star-history.com/#zshzzz/weather-briefing-analyst&Date)
+
 ## Install
 
 Install from GitHub with the skills CLI:
