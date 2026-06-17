@@ -109,3 +109,8 @@ Never present a deterministic forecast for thunderstorms or short-lived convecti
 - "明后天去环球影城会不会下雨，云图怎么看？"
 - "给我分析一下杭州西湖附近这几天的天气和穿衣建议"
 - "看一下这个地址未来三天通勤是否会受暴雨影响"
+- "Give me a quick forecast check for Beijing Chaoyang District for the next two days." -> quick level.
+- "Analyze whether I should carry an umbrella for my commute in Shanghai Pudong tomorrow." -> standard level.
+- "Use radar and satellite/cloud imagery to brief thunderstorm risk near Hangzhou West Lake this weekend." -> deep level.
+- "I am visiting Universal Beijing Resort tomorrow. Check rain timing, wind, heat, and travel advice." -> standard level, escalate to deep if radar/cloud imagery is requested.
+- "Assess the next three days of weather for this address and tell me the best outdoor activity windows." -> ask level choice if not urgent; otherwise use standard level.
