@@ -1,0 +1,6 @@
+{"id":"quick-rain-check","prompt":"快速看一下广州明天会不会下雨。","expected":"Use quick mode and avoid radar/satellite unless warning signals require escalation."}
+{"id":"quick-temperature","prompt":"明天成都最高温大概多少？","expected":"Use quick mode with at least forecast/API evidence and absolute date."}
+{"id":"standard-clothing","prompt":"未来三天去西湖玩怎么穿？会不会晒？","expected":"Use standard mode, include practical clothing/sun/rain advice, and check AQI/UV if relevant."}
+{"id":"standard-commute","prompt":"这个地址未来三天通勤是否会受暴雨影响：上海市浦东新区世纪大道。","expected":"Use standard mode, resolve the address/area, and escalate only if severe-weather evidence appears."}
+{"id":"deep-explicit-cloud","prompt":"帮我看深圳今天下午云图和雷达，判断暴雨什么时候来。","expected":"Use deep mode, inspect valid imagery before making imagery claims, and use timing windows."}
+{"id":"ask-ambiguous-region","prompt":"帮我分析华东这周末天气适不适合自驾。","expected":"Ask a follow-up because the region and route are too broad for one location briefing."}

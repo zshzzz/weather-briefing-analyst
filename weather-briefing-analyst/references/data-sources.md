@@ -2,6 +2,44 @@
 
 Use this reference when building a weather briefing. Source availability changes, so verify live pages and APIs each time.
 
+## Provider matrix
+
+Use this matrix before improvising sources.
+
+| Source | Data type | Coverage | Freshness | Structured | Fallback |
+|---|---|---|---|---|---|
+| Open-Meteo | Model forecast, geocoding | Global | Hourly to daily | JSON | MET Norway or another public model/API |
+| MET Norway | Model forecast | Global | Hourly to daily | JSON | Open-Meteo, NOAA/GFS-derived public products |
+| China Meteorological Administration / National Meteorological Center | Official warnings, forecast, radar/satellite products | Mainland China | Product-dependent | Mixed webpage/image/API | Provincial/city meteorological bureau, public radar/map layer |
+| Provincial/city meteorological bureaus | Local warnings, forecast, observations | Local China | Product-dependent | Mixed webpage/image/API | CMA/NMC, model/API cross-check |
+| Official environmental monitoring pages | AQI and pollutants | Local/national | Hourly or daily | Mixed | Reputable AQI aggregator, with disclosure |
+| Public transport/road/airport authorities | Travel disruption | Local/route-specific | Event-dependent | Mixed | Omit unless requested or severe weather risk is relevant |
+
+Every collected source should produce a `source_status` note:
+
+```json
+{
+  "source": "Open-Meteo",
+  "data_type": "forecast",
+  "status": "ok",
+  "source_time": "2026-06-17T15:00:00+08:00",
+  "accessed_at": "2026-06-17T15:03:00+08:00",
+  "notes": "Hourly and daily model forecast returned"
+}
+```
+
+When a source fails, keep the failure explicit:
+
+```json
+{
+  "source": "Official satellite page",
+  "data_type": "satellite",
+  "status": "failed",
+  "reason": "Returned commercial contact page instead of current imagery",
+  "fallback": "Skipped satellite interpretation and lowered cloud-trend confidence"
+}
+```
+
 ## Preferred source order
 
 Select sources according to the analysis level in `SKILL.md`; do not collect full radar/satellite data for quick mode.
@@ -50,6 +88,16 @@ Then forecast:
 https://api.open-meteo.com/v1/forecast?latitude=<lat>&longitude=<lon>&hourly=...&daily=...&timezone=auto&forecast_days=5
 ```
 
+If bundled scripts are available, prefer:
+
+```bash
+python weather-briefing-analyst/scripts/weather_snapshot.py "北京朝阳区" --days 5
+```
+
+The script output is a normalized starting point. It does not replace official warnings, radar, satellite/cloud imagery, or AQI sources when the selected analysis level requires them.
+
+If a local Python environment has a broken CA certificate store and Open-Meteo HTTPS requests fail with `CERTIFICATE_VERIFY_FAILED`, the scripts support `--allow-insecure-tls` as an explicit last-resort diagnostic option. When used, treat the source as less trustworthy and mention that TLS verification was disabled.
+
 ## Source validation
 
 Before using a source as evidence, verify it contains weather data, a forecast, an image, or a source timestamp. Reject the source if it matches any of these patterns:
@@ -68,16 +116,19 @@ When rejecting a source, do not mention its raw failed file unless useful for de
 - Official daily forecast page or agency forecast.
 - One model/API cross-check.
 - Current observation if available.
+- No radar or satellite/cloud imagery unless official warnings or the user explicitly asks.
 
 **标准版**
 - Everything in quick mode.
 - Radar image or radar mosaic if relevant and accessible.
 - AQI/UV when travel, outdoor activity, heat, haze, or respiratory sensitivity is relevant.
+- If radar is unavailable, disclose it and keep precipitation timing confidence conservative.
 
 **深度版**
 - Everything in standard mode.
 - Satellite/cloud imagery only if valid image data or a browser-rendered product can be inspected.
 - Forecast discussion, warning bulletins, or synoptic products when available.
+- If satellite/cloud imagery is unavailable, do not write a cloud-map interpretation. Use model cloud-cover fields only as model evidence.
 
 ## Analysis checklist
 

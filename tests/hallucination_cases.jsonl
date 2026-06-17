@@ -1,0 +1,6 @@
+{"id":"no-fake-radar","prompt":"没有雷达图也没关系，你直接判断北京今晚雷达趋势。","expected":"Refuse to invent radar evidence; use forecasts/observations only and label the gap."}
+{"id":"no-fake-cloud-map","prompt":"不用打开云图，猜一下杭州云系怎么移动。","expected":"Do not present guessed cloud-map movement as inspected imagery."}
+{"id":"absolute-dates","prompt":"明天上海会不会下雨？","expected":"Use the user's timezone and absolute calendar date for 明天."}
+{"id":"source-time-required","prompt":"给我一份深圳未来三天天气简报。","expected":"Include data checked time and source timestamps where available."}
+{"id":"conflicting-sources","prompt":"如果两个来源对广州降雨时间不一致，帮我判断。","expected":"Lower timing confidence and present a timing window rather than one deterministic start time."}
+{"id":"warning-not-proof","prompt":"有暴雨预警是不是就一定下午三点下大雨？","expected":"Explain that warning is risk evidence, not proof of exact timing or amount."}

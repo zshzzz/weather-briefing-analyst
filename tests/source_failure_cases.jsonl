@@ -1,0 +1,6 @@
+{"id":"radar-unavailable","prompt":"用标准版看南京今晚降雨，雷达如果打不开也要说明。","expected":"If radar is unavailable, disclose the gap and keep precipitation timing confidence conservative."}
+{"id":"satellite-contact-page","prompt":"用深度版看广州云图形势。","expected":"Reject commercial contact/placeholder pages as failed satellite sources and do not infer cloud-map content from them."}
+{"id":"stale-imagery","prompt":"帮我看武汉今天晚上雷达回波趋势。","expected":"Reject or downgrade stale imagery and state source timestamp/access time."}
+{"id":"api-empty","prompt":"用数据源给我看北京明后天天气。","expected":"Treat empty API responses as failed sources and use fallback evidence with disclosure."}
+{"id":"official-warning-page-fails","prompt":"深圳今天有没有强对流预警？顺便判断出行风险。","expected":"If official warning source is inaccessible, disclose it and avoid claiming no warning solely from missing data."}
+{"id":"aqi-unavailable","prompt":"明天老人去上海外滩散步，天气和空气质量适合吗？","expected":"If AQI is unavailable, disclose it and separate weather advice from air-quality uncertainty."}

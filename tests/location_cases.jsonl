@@ -1,0 +1,6 @@
+{"id":"district-large","prompt":"北京朝阳区未来三天天气如何？","expected":"Resolve district, state representative point or matched location, and mention large-district limitations if relevant."}
+{"id":"poi-theme-park","prompt":"北京环球影城明天适合去吗？","expected":"Prefer Universal Beijing Resort/POI coordinates over Tongzhou district center."}
+{"id":"mountain-scenic","prompt":"黄山风景区后天适合上山吗？","expected":"Flag elevation/terrain sensitivity and avoid treating nearby city forecast as fully representative."}
+{"id":"coastal-city","prompt":"青岛五四广场明晚风大吗？","expected":"Resolve coastal POI and consider coastal wind/gust sensitivity."}
+{"id":"route-sampling","prompt":"周六从上海开车到杭州，沿途天气有风险吗？","expected":"Use origin and destination, and add midpoint sampling when possible."}
+{"id":"ambiguous-place-name","prompt":"明天朝阳天气怎么样？","expected":"Ask or clearly disambiguate because 朝阳 can refer to multiple places."}

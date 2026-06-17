@@ -39,7 +39,8 @@ Install locally for Claude Code:
 ./scripts/install-claude-code.sh
 ```
 
-Both scripts overwrite an existing `weather-briefing-analyst` skill at the target location.
+Both scripts install `weather-briefing-analyst` to the target skills directory.
+If the target already exists, they create a timestamped backup first. Pass `--force` to replace without a backup.
 
 ## Skill Layout
 
@@ -52,10 +53,21 @@ weather-briefing-analyst/
 ├── scripts/
 │   ├── install-codex.sh
 │   └── install-claude-code.sh
+├── tests/
+│   ├── hallucination_cases.jsonl
+│   ├── location_cases.jsonl
+│   ├── mode_selection_cases.jsonl
+│   ├── source_failure_cases.jsonl
+│   └── trigger_cases.jsonl
 └── weather-briefing-analyst/
     ├── SKILL.md
     ├── agents/
     │   └── openai.yaml
+    ├── scripts/
+    │   ├── fetch_open_meteo.py
+    │   ├── geocode.py
+    │   ├── normalize_weather.py
+    │   └── weather_snapshot.py
     └── references/
         └── data-sources.md
 ```
@@ -63,14 +75,25 @@ weather-briefing-analyst/
 ## Capabilities
 
 - Resolves a city, district, address, landmark, route point, or coordinate into a forecast location.
-- Requires the user to choose an analysis depth before collecting live weather data:
+- Infers an analysis depth from the request and lets the user override it:
   - Quick: weather forecast only.
   - Standard: forecast plus radar and air-quality context.
   - Deep: forecast plus radar, satellite/cloud imagery, and broader weather-pattern analysis.
-- Compares official weather sources and model/API forecasts.
+- Provides deterministic Open-Meteo geocoding and forecast scripts as a normalized starting point.
+- Compares official weather sources and model/API forecasts when available.
 - Uses radar or satellite/cloud imagery only when valid current imagery is accessible.
-- Produces day-by-day forecast tables with confidence levels and travel advice.
+- Produces day-by-day forecast tables, per-element confidence, and travel advice.
 - Clearly labels uncertainty, stale imagery, inaccessible sources, and non-official guidance.
+
+## Data Snapshot Script
+
+The bundled Open-Meteo snapshot script provides a deterministic starting point for agents:
+
+```bash
+python weather-briefing-analyst/scripts/weather_snapshot.py "39.9,116.4" --days 3
+```
+
+If the local Python CA store is broken and HTTPS requests fail with `CERTIFICATE_VERIFY_FAILED`, rerun with `--allow-insecure-tls` and treat that output as a lower-trust diagnostic source.
 
 ## Discoverability Notes
 

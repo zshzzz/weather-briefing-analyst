@@ -1,0 +1,6 @@
+{"id":"trigger-weather-simple-rain","prompt":"明天北京朝阳区会不会下雨？","expected":"Should trigger the skill and infer quick mode."}
+{"id":"trigger-commute-weather","prompt":"帮我看看上海浦东未来三天通勤天气，早晚高峰会不会受影响。","expected":"Should trigger the skill and infer standard mode."}
+{"id":"trigger-travel-poi","prompt":"明天去北京环球影城适合吗？帮我看天气和出行建议。","expected":"Should trigger the skill, resolve the POI, and infer standard mode."}
+{"id":"trigger-radar-cloud","prompt":"用雷达和云图分析杭州西湖今晚强对流风险。","expected":"Should trigger the skill and infer deep mode."}
+{"id":"nontrigger-climate-general","prompt":"为什么沿海城市昼夜温差通常比内陆小？","expected":"Should not trigger live weather briefing; answer as general meteorology unless user asks for a place forecast."}
+{"id":"nontrigger-coding","prompt":"帮我写一个 Python 函数解析天气 JSON。","expected":"Should not trigger the weather briefing skill; this is a coding task."}
